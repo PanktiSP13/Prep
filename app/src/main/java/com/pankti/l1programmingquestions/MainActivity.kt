@@ -2,27 +2,29 @@ package com.pankti.l1programmingquestions
 
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.enableEdgeToEdge
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LifecycleCoroutineScope
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
+import com.pankti.l1programmingquestions.Util.date
 import com.pankti.l1programmingquestions.databinding.ActivityMainBinding
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.retry
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import kotlin.math.min
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,13 +32,12 @@ class MainActivity : AppCompatActivity() {
     private var myData = MutableStateFlow("")
     private var b = B()
 
-
-    // activity-ktx library to create instance like this so we don't need to user viewmodelprovider factory
-    val viewModel: MyViewModel by viewModels()
+    // activity-ktx library to create instance like this so we don't need to use viewmodelprovider factory
+    private val viewModel: MyViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+//        enableEdgeToEdge()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -50,7 +51,25 @@ class MainActivity : AppCompatActivity() {
 
     private fun initView() {
 
-        //lamda function
+        setBusListAdapter()
+
+        // date format change
+        try {
+            val dateStr = "12/12/2024"
+            val newDate = SimpleDateFormat("dd/MM/yyyy").parse(dateStr)
+            val formattedDate = SimpleDateFormat("MMM dd,yy").format(newDate)
+            Log.e(
+                "@@@@",
+                "initView: dateStr : $dateStr newDate : $newDate formattedDate : $formattedDate"
+            )
+
+        } catch (e: Exception) {
+            Log.e("@@@@", "initView: error -------->${e.message}")
+        }
+
+        val abc : (String,String) -> Unit = {a,b -> print(a+b) }
+
+        //lambda function
         val add :(Int,Int)->Int={ b,c -> b+c}
         Log.e("@@@@", "lamda function: ${add(4,5)}")
 
@@ -58,6 +77,21 @@ class MainActivity : AppCompatActivity() {
         val sum = fun(a:Int,b:Int):Int = a+b
 
         Log.e("@@@@", "anonymous function: ${sum(41,5)}")
+
+        //extension function
+        val str = "Marry Johnson"
+        Log.e("@@@@", "Extension function: ${str.getFormattedString()}")
+
+        //higher order function
+        fun submit(a: Int, b: Int, onSubmit: (Int) -> Unit, onFailure: (String) -> Unit) {
+            if (a + b > 5) onSubmit(a + b) else onFailure("Sum is less than 5")
+        }
+
+        submit(2, 4, onSubmit = {
+            Log.e("@@@", "higher order function : Success: $it")
+        }, onFailure = {
+            Log.e("@@@", "higher order function : Failure: $it")
+        })
 
 
 
@@ -99,10 +133,22 @@ class MainActivity : AppCompatActivity() {
                     Log.e("@@@@", "collect:  $items")
                 }
         }
+
+
+        val c = C()
+        c.methodFromA()
+    }
+
+    private fun setBusListAdapter() {
+        binding.rvBusList.adapter = BusListAdapter(listOf("1", "2", "3", "4"), onItemClicked = {
+            Toast.makeText(this, "$it selected", Toast.LENGTH_SHORT).show()
+        })
     }
 
 
     private fun observeData() {
+
+
         lifecycleScope.launch {
             getData().collectLatest { value ->
                 Log.e("@@@", "Data retrieved: $value")
@@ -155,6 +201,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun flowExtensionMethodDemo() {
         lifecycleScope.launch {
+
             var list = listOf(1, 2, 3, 4, 5, 6, 7).asFlow()
             list = list.take(3)
             Log.e("@@@", "flowExtensionMethodDemo: ${list.toList()}")
@@ -204,9 +251,74 @@ open class B() : A, AA {
 
 class C() : B(), A {
     override fun methodFromA() {
+        val typeOfFruits = Fruits.Banana
+        when (typeOfFruits) {
+            Fruits.Apple -> Log.e("@@@", "methodFromA: apple ")
+            Fruits.Banana -> Log.e("@@@", "methodFromA: banana ")
+            Fruits.Pineapple -> Log.e("@@@", "methodFromA: pineapple ")
+        }
 
+        val tempList = listOf(5, 3, 6, 8, 2, 5, 1, 7, 33)
+        Log.e("#####", tempList.sorted().toString())
+        val itemCount = tempList.filter { it == 5 }.size
+        Log.e("@@@", "item count : $itemCount")
+        Log.e("@#$%^%", tempList.reversed().toString())
+
+        val tempList1 = listOf(5, 3, 6, 7, 8, 2, 5, 1, 7, 33, 2)
+        Log.e("@@@@", "Remove Duplicates : $tempList1")
+        Log.e("@@@@", "Remove Duplicates : ${tempList1.distinct()}")
+
+    }
+}
+
+enum class Fruits(id: Int) {
+    Apple(4), Banana(2), Pineapple(1)
+}
+
+private fun String.getFormattedString(): String {
+    return "${this.uppercase()}  ${MyApplication.getInstance().applicationContext.getString(R.string.app_name)}"
+}
+
+
+abstract class MyLibrary {
+
+    private val abc = "Pankti"
+
+    abstract fun doYourWork()
+
+    fun printMyName():String{
+        return abc
+    }
+}
+
+
+object Util {
+
+
+    fun String.abc(){
+    }
+
+    fun MyLibrary.date(){
+        print("prajapati")
+    }
+
+
+    fun User11.isMyTeacher(){
 
     }
 
+
 }
 
+class User11(val name : String){
+    fun isStudent():Boolean{
+        return false
+    }
+}
+
+
+class My : MyLibrary(){
+    override fun doYourWork() {
+
+    }
+}

@@ -6,33 +6,33 @@ import java.util.Queue
 import java.util.Stack
 
 fun main() {
-//    l1StrContainsVowels()
-//    l1FibonacciSeries()
-//    l1FibonacciSeriesWithRecursion()
-//    l1ReverseString()
-//    l1ReverseNumber()
-//    l1SwapValuesWithoutUsingThirdVariable()
-//    l1CheckIfStringPalindrome()
-//    l1CheckIfNumberPalindrome()
-//    l1CheckIfPrimeNumber()
-//    l1RemoveLeadingExtraSpaceFromString()
-//    l1SortList()
-//    l1Factorial()
-//    l1SecondLastLargestNumberInList()
-//    l1FindCharInStringAndOccurrences()
-//    l1Users()
-//    l1DSQueue()
-//    l1DSStack()
-//    l1DSHashMap()
-//    l1DSBinaryTree()
-//    l1DSBubbleSort()
-//    l1DSSelectionSort()
-//    l1DSInsertionSort()
+    l1StrContainsVowels()
+    l1FibonacciSeries()
+    l1FibonacciSeriesWithRecursion()
+    l1ReverseString()
+    l1ReverseNumber()
+    l1SwapValuesWithoutUsingThirdVariable()
+    l1CheckIfStringPalindrome()
+    l1CheckIfNumberPalindrome()
+    l1CheckIfPrimeNumber()
+    l1RemoveLeadingExtraSpaceFromString()
+    l1SortList()
+    l1Factorial()
+    l1SecondLastLargestNumberInList()
+    l1FindCharInStringAndOccurrences()
+    l1Users()
+    l1DSQueue()
+    l1DSStack()
+    l1DSHashMap()
+    l1DSBinaryTree()
+    l1DSBubbleSort()
+    l1DSSelectionSort()
+    l1DSInsertionSort()
 }
 
 // -------------------------------------------------------------------------------------------------
 
-fun l1DSInsertionSort(list: ArrayList<Int> = arrayListOf(8, 5, 1, 3, 2)) {
+fun l1DSInsertionSort(list: ArrayList<Int> = arrayListOf(4, 2, 7, 3, 5, 42, 6, 1, 3)) {
     println(list)
     val n = list.size
 
@@ -55,14 +55,14 @@ fun l1DSInsertionSort(list: ArrayList<Int> = arrayListOf(8, 5, 1, 3, 2)) {
         list[j + 1] = key
 
         // Print the array after placing the key in the right position
-        println("After inserting $key: $list")
+        println("| $key: $list")
     }
 }
 
 
 // -------------------------------------------------------------------------------------------------
 
-private fun l1DSSelectionSort(list: ArrayList<Int> = arrayListOf(2, 8, 7, 1, 3)) {
+private fun l1DSSelectionSort(list: ArrayList<Int> = arrayListOf(4, 2, 7, 3, 5, 42, 6, 1, 3)) {
     //  Time complexity: O(N^2)
     // condition with index
 
@@ -288,12 +288,20 @@ fun l1ReverseString() {
     }
 
     println(reversedString)
+
+
+    //fifth approach
+    var strr = ""
+    for (i in str.indices.reversed()){
+        strr +=str[i]
+    }
 }
 
 // -------------------------------------------------------------------------------------------------
 
 fun l1ReverseNumber() {
     var number = 12345678
+
     println("original number : $number")
 
     var reversedNumber = 0
@@ -312,9 +320,9 @@ fun l1SwapValuesWithoutUsingThirdVariable() {
 
     println("num1 : $num1 num2 : $num2")
 
-    num2 += num1 // 30
-    num1 = num2 - num1 // 30-10 = 20
-    num2 -= num1 // 30-20 = 10
+    num1 += num2 // 30
+    num2 = num1 - num2 // 30-20 = 10
+    num1 -= num2// 30-10 = 20
     println("num1 : $num1 num2 : $num2")
 }
 
@@ -377,7 +385,7 @@ fun checkIfPrimeNumber(n: Int): Boolean {
     if (n == 0 || n == 1) return false
     if (n == 2) return true
 
-    for (i in 2..<n) {
+    for (i in 3..<n) {
         println("i : $i ${n % i == 0}")
         if (n % i == 0) {
             return false
@@ -390,17 +398,13 @@ fun checkIfPrimeNumber(n: Int): Boolean {
 
 fun l1RemoveLeadingExtraSpaceFromString() {
     val str = "      My name is pankti prajapati."
-
-    val charSet = str.toCharArray()
     var newStr = ""
-    for (i in charSet) {
-        if (i != ' ') {
-            newStr += i
-        } else {
-            if (newStr.isNotEmpty()) {
+
+    for (i in str) {
+
+        if (newStr.isNotEmpty() ||( i != ' ')) {
                 newStr += i
             }
-        }
     }
     println(newStr)
 }
@@ -438,6 +442,11 @@ fun l1SortList() {
 // -------------------------------------------------------------------------------------------------
 
 fun l1Factorial(n: Int=5) {
+    if (n == 0 || n == 1) {
+        print("1")
+        return
+    }
+
     var i = n
     var finalValue = 1
 
@@ -462,8 +471,6 @@ fun l1SecondLastLargestNumberInList() {
 
 fun findSecondLastLargeNumberInList(list: List<Int>) {
     if (list.isNotEmpty() && list.size >= 2) {
-        list.sorted()
-        println("Sorted List : ${Gson().toJson(list.sorted())}")
         println("second large number in list : ${list.sorted()[list.size - 2]}")
     }
 
@@ -480,6 +487,7 @@ fun l1FindCharInStringAndOccurrences() {
     println("Original String: $str")
     val charSet = str.toCharArray()
     var occurrence = 0
+
     for (i in charSet) {
         if (i.equals(findChar, ignoreCase = true)) {
             occurrence++
@@ -552,7 +560,9 @@ interface UserContract {
     fun checkValid(onSuccess: (String) -> Unit = {}, onFailure: (String) -> Unit = {}) {
         onSuccess("priyanka chopra")
         onFailure("something went wrong")
+
     }
+
 
 }
 
@@ -580,4 +590,35 @@ data class Permission(val name: String, val age: Int) {
     // creating secondary constructor with primary constructor
     constructor(name: String) : this(name, 0)
     constructor(age: Int) : this("", age)
+}
+
+
+
+open class ABC {
+
+    fun a(a:Int){
+
+    }
+
+    open fun a(b :String){
+        print("vfgsg")
+    }
+
+}
+
+class BC() : ABC(){
+
+    override fun a(b: String){
+        print(b)
+    }
+}
+
+class CCC{
+    val abc : ABC = ABC()
+    val bc : ABC = BC()
+
+    fun abcS(){
+        abc.a("abcvdf")
+        bc.a("rfoesjgsojg")
+    }
 }

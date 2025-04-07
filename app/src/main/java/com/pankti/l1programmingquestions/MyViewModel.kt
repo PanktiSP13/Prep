@@ -14,14 +14,14 @@ class MyViewModel : ViewModel() {
     private var _userList = MutableLiveData<List<String>>()
     var userList: LiveData<List<String>> = _userList
 
+
+
     init {
         println("@@@@ VM init")
         viewModelScope.launch {
             delay(5000)
         }
         fetchUserData()
-
-
     }
 
     private fun fetchUserData() {

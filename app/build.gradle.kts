@@ -34,8 +34,11 @@ android {
         jvmTarget = "1.8"
     }
 
-    viewBinding {
+    dataBinding{
         enable = true
+    }
+    buildFeatures{
+        viewBinding = true
     }
 }
 
@@ -47,14 +50,24 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.support.annotations)
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
     testImplementation(libs.junit)
+    testImplementation(libs.junit.jupiter)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    // for serialization, Network response :  JSON to object
-    implementation(libs.gson)
     // to use ktx concise method & generating singleton instance of vm in activity
     implementation(libs.activity.ktx)
     // to use ktx concise method & generating singleton instance of vm in fragment
     implementation(libs.fragment.ktx)
+
+
+    // for serialization, Network response :  JSON to object
+    implementation(libs.gson)
+    //network call API
+    implementation(libs.retrofit)
+    implementation(libs.okhttp.client)
+    // For network response logs
+    implementation(libs.okhttp.loggingInterceptor)
 }
