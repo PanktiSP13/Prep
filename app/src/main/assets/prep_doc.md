@@ -223,7 +223,7 @@ By dividing a problem into smaller subproblems, you reduce the complexity of des
 
 ---
 
-# 🚨 Issue: Strings are immutable in Kotlin, so character = i.toString() creates a new string every iteration → O(N) extra space usage.
+### 🚨 Issue: Strings are immutable in Kotlin, so character = i.toString() creates a new string every iteration → O(N) extra space usage.
 
 # 👩‍💻 Kotlin, OOP, SOLID, Coroutines & Reactive Patterns in Android
 
@@ -235,7 +235,7 @@ By dividing a problem into smaller subproblems, you reduce the complexity of des
 A blueprint or template for creating objects. It defines properties (data) and methods (functions) that the objects will have.
 
 ### Object
-A real-world instance of a class.
+A real-world instance of a class. It represents a real-world entity and has its own state (attributes) and behaviour (methods).
 
 ### Encapsulation
 Wrapping data. Protects data by controlling how it is accessed or modified.
@@ -245,16 +245,19 @@ Hiding complex implementation details and showing only the important parts.
 You only need to know how to use the method, not how it works internally.
 
 ### Inheritance
-Promotes code reuse and reduces duplication.  
+When one class derived from another class is called inheritance, where subclass has access to all the super class functionalities. The subclass can reuse the fields and methods of the superclass.
 The child class inherits features from the parent class but can also have its own features.
 
 ### Polymorphism
-The ability to take many forms. A method can behave differently based on the object.  
-(Same name but different behaviour). Makes your code flexible and extendable.
 
-**Two Types:**
-- **Compile-Time Polymorphism (Method Overloading):** Same method name, different parameters.
-- **Runtime Polymorphism (Method Overriding):** A child class redefines a method from the parent class.
+Polymorphism is about having same name but different behaviours. It means the same thing can act differently depending on the situation.
+Polymorphism allows objects of different classes to be treated as objects of a common superclass through method overriding and method overloading.
+
+- **Method Overriding**:  
+  Subclasses can provide their own implementation of methods defined in the superclass, allowing the same method name to behave differently in different classes.
+
+- **Method Overloading**:  
+  Multiple methods can have the same name but different parameter lists within a single class, enabling a method to perform different tasks based on the arguments passed to it.
 
 ---
 
