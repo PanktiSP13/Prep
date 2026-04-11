@@ -1,19 +1,22 @@
 package com.pankti.l1programmingquestions
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.LifecycleCoroutineScope
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
-import com.pankti.l1programmingquestions.Util.date
 import com.pankti.l1programmingquestions.databinding.ActivityMainBinding
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.channels.Channel.Factory.BUFFERED
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flow
@@ -23,7 +26,6 @@ import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
-import kotlin.math.min
 
 
 class MainActivity : AppCompatActivity() {
@@ -32,8 +34,13 @@ class MainActivity : AppCompatActivity() {
     private var myData = MutableStateFlow("")
     private var b = B()
 
+//    private val s: Intent by lazy {
+//        Intent(this, SecondActivity::class.java)
+//    }
+
     // activity-ktx library to create instance like this so we don't need to use viewmodelprovider factory
     private val viewModel: MyViewModel by viewModels()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +52,48 @@ class MainActivity : AppCompatActivity() {
         initView()
         observeData()
         performClicks()
+
+        lifecycleScope.launch {
+            tryIT()
+        }
+
+    }
+
+    suspend fun tryIT() {
+
+        // execute task in parallel
+        coroutineScope {
+            val a = async { abc() }
+            val b = async { xyz() }
+
+            val result1 = a.await()
+            val result2 = b.await()
+
+            Log.e("@@@", "tryIT: $result1 $result2")
+        }
+    }
+
+    fun abc() {}
+    fun xyz() {}
+
+    open class CC {
+        protected val aa = "khi"
+        private val bbb = "gef"
+
+        open fun anc() {
+
+        }
+    }
+
+
+    class D : CC() {
+        fun ac() {
+            val ccd = aa.toString() + "psp"
+        }
+
+        override fun anc() {
+            super.anc()
+        }
 
     }
 
@@ -246,7 +295,6 @@ open class B() : A, AA {
         super<AA>.methodFromA()
         Log.e("@@@@", "methodFromA:from B ")
     }
-
 }
 
 class C() : B(), A {
@@ -268,9 +316,40 @@ class C() : B(), A {
         Log.e("@@@@", "Remove Duplicates : $tempList1")
         Log.e("@@@@", "Remove Duplicates : ${tempList1.distinct()}")
 
+
+        val sumFun = operation(type = OperationType.ADD)
+        Log.e("@@@@", "methodFromA: ${sumFun(10, 23)}")
+
+        val addition = 5 add 6
+        Log.e("@@@@", "methodFromA: $addition")
     }
+
+    // higher order function ------------------------------------------
+
+    // take fun as an argument
+    fun calculate(a: Int, b: Int, operation: (Int, Int) -> Int): Int {
+        // Calls the passed-in function
+        return operation(a, b)
+    }
+
+    //return a fun
+    fun operation(type: OperationType): (Int, Int) -> Int {
+        return when (type) {
+            OperationType.ADD -> { x, y -> x + y }
+            OperationType.MULTIPLY -> { x, y -> x * y }
+            OperationType.SUBTRACT -> { x, y -> x - y }
+            OperationType.DIVIDE -> { x, y -> x / y }
+        }
+    }
+    // ------------------------------------------------------------------
+
+    infix fun Int.add(item: Int): Int = this + item
 }
 
+
+enum class OperationType {
+    ADD, MULTIPLY, SUBTRACT, DIVIDE
+}
 enum class Fruits(id: Int) {
     Apple(4), Banana(2), Pineapple(1)
 }
@@ -318,7 +397,54 @@ class User11(val name : String){
 
 
 class My : MyLibrary(){
+    val type: ABCD = ABCD.None
     override fun doYourWork() {
+        when (type) {
+            is ABCD.A -> {
+                type.doSomething()
+            }
+
+            is ABCD.BB -> {
+                type.value
+            }
+
+            ABCD.None -> {
+
+            }
+        }
+
+
+        CoroutineScope(Dispatchers.Main).launch {
+            val abb = flow<String> {
+                emit("sdfg")
+            }.buffer(capacity = BUFFERED).collectLatest {
+                delay(4000)
+                it.length
+            }.run {
+
+            }
+
+            val a = async { doYourWork() }.await()
+        }
+
+        try {
+
+        } catch (e: Exception) {
+
+        } finally {
+
+        }
 
     }
+}
+
+sealed class ABCD(val type: String) {
+    object None : ABCD("none")
+    data object A : ABCD("dashboard") {
+        fun doSomething() {
+            type.toString()
+        }
+    }
+
+    data class BB(val value: String) : ABCD("main screen")
 }

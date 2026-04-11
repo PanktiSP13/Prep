@@ -12,7 +12,7 @@ class DSAQuestions {
 
     fun mergeAlternately(word1: String, word2: String): String {
         var finalStr = ""
-        for (i in 0..(word1.length + word2.length - 2)) {
+        for (i in 0 until (maxOf(word1.length, word2.length))) {
             if (i < word1.length) {
                 finalStr += word1[i]
             }
@@ -24,9 +24,17 @@ class DSAQuestions {
     }
 
     fun reverseWords(s: String): String {
-        return s.trim().split("\\s+".toRegex()) // Splits by one or more spaces
-            .reversed() // Reverse the list
-            .joinToString(" ")
+//        return s.trim().split("\\s+".toRegex()) // Splits by one or more spaces
+//            .reversed() // Reverse the list
+//            .joinToString(" ")
+//
+        val strList = s.split(" ")
+        val finalStr = StringBuilder()
+
+        for (i in strList.size-1 downTo 0){
+            finalStr.append(strList[i]+" ")
+        }
+        return finalStr.toString().trim()
     }
 
     //pending
@@ -94,7 +102,7 @@ class DSAQuestions {
         val temp = HashMap<Int, Int>()
 
         list.forEachIndexed { index, item ->
-            val second = target - list[index] // 9-4 = 5
+            val second = target - item // 9-4 = 5
             if (temp.containsKey(second)) {
                 return intArrayOf(temp[second] ?: 0, index)
             }
@@ -123,6 +131,7 @@ class DSAQuestions {
         }
 
         return finalValue!!
+
     }
 
     fun findNonRepeatingCharIndex(str: String = "leetcode"): List<Pair<Char, Int>> {
@@ -148,13 +157,20 @@ class DSAQuestions {
     fun isValidParenthesesOrder(str: String): Boolean {
         val stack = Stack<Char>()
         val bracketsMap = mapOf(')' to '(', '}' to '{', ']' to '[')
-        for (i in str) {
-            if (stack.isNotEmpty() && stack.peek() != bracketsMap[i]) {
-                return false
+
+        for (ch in str) {
+            if (ch in bracketsMap.values) {
+                // If it's an opening bracket, push to stack
+                stack.push(ch)
+            } else if (ch in bracketsMap.keys) {
+                // If it's a closing bracket, check matching
+                if (stack.isEmpty() || stack.pop() != bracketsMap[ch]) {
+                    return false
+                }
             }
-            stack.push(i)
         }
-        return false
+        // At the end, stack should be empty
+        return stack.isEmpty()
     }
 
 
@@ -347,7 +363,6 @@ class DSAQuestions {
                 (i <= first) -> first = i
                 (i <= second) -> second = i
                 else -> return true
-
             }
         }
         return false
@@ -445,7 +460,7 @@ class DSAQuestions {
     // pending
     fun removeStars(s: String = "leet**cod*e"): String {
         if (s.isEmpty()) return s
-
+        
         var finalStr = ""
         var prevItem: Char? = null
         var temp = s
@@ -486,11 +501,17 @@ class DSAQuestions {
 
     //find the smallest repeating element in the array with the highest occurrence.
     fun firstSmallestRepeatingElement(array: IntArray = intArrayOf(1, 5, 3, 3, 4, 3, 5, 5, 6)) {
+        
+        // sort array
+        // use linkedHashmap to maintain order
+        // check occurrence 
+        
         val data = HashMap<Int, Int>()
-
+        
         for (i in array) {
             if (data.containsKey(i)) data[i] = (data[i] ?: 0) + 1 else data[i] = 1
         }
+
 
         print(data)
 
@@ -523,8 +544,8 @@ class DSAQuestions {
     ): Int {
 
         if (arrival.isEmpty() && departure.isEmpty()) return 0
-        arrival.sorted() // O(n log n)
-        departure.sorted() // // O(n log n)
+        arrival.sort() // O(n log n)
+        departure.sort() // // O(n log n)
 
         var platFormCount = 0
 
@@ -857,7 +878,6 @@ class DSAQuestions {
         return removeCount
     }
 
-
     fun findMinimumMeetingRooms(meetings: Array<IntArray>): Int {
         if (meetings.isEmpty()) return 0
         println(Gson().toJson(meetings))
@@ -909,7 +929,6 @@ class DSAQuestions {
         println("arrows : $arrows")
         return arrows
     }
-
 
     fun largestAltitude(gain: IntArray): Int {
         var maxAltitude = 0
@@ -972,5 +991,5 @@ class DSAQuestions {
         return result
     }
 
-  
+
 }

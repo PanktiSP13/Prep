@@ -5,22 +5,33 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flatMapMerge
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 
 val users = listOf("Pinu", "Pankti", "Pinki", "Palak", "Pinya")
+
+
+
 
 class MyViewModel : ViewModel() {
 
     private var _userList = MutableLiveData<List<String>>()
     var userList: LiveData<List<String>> = _userList
 
-
+    private var  _user = MutableStateFlow<String>("")
+    var user : StateFlow<String> = _user
 
     init {
         println("@@@@ VM init")
         viewModelScope.launch {
             delay(5000)
         }
+
         fetchUserData()
     }
 

@@ -27,8 +27,8 @@ class TripRepositoryImpl : TripRepository {
         travelDate: String,
     ): List<TripDataModel> {
         val filteredList = myTripList.filter {
-            (it.source == (sourceName ?: "")) && (it.destination == (destination ?: "")) &&
-                    (it.startDate == (travelDate ?: "") || it.endDate == (travelDate ?: ""))
+            (it.source == sourceName) && (it.destination == destination) &&
+                    (it.startDate == travelDate || it.endDate == travelDate)
         }
         return filteredList
     }

@@ -5,6 +5,7 @@ import java.util.PriorityQueue
 import java.util.Queue
 import java.util.Stack
 
+
 fun main() {
     l1StrContainsVowels()
     l1FibonacciSeries()
@@ -71,17 +72,17 @@ private fun l1DSSelectionSort(list: ArrayList<Int> = arrayListOf(4, 2, 7, 3, 5, 
 
     for (i in 0 until sortedList.size) {
 
-        var smallestItem = i
+        var smallestItemIndex = i
 
         for (j in i + 1 until sortedList.size) {
-            if (sortedList[j] < sortedList[smallestItem]) {
-                smallestItem = j
+            if (sortedList[j] < sortedList[smallestItemIndex]) {
+                smallestItemIndex = j
             }
         }
 
         // swap
-        val temp = sortedList[smallestItem] //1
-        sortedList[smallestItem] = sortedList[i] //2
+        val temp = sortedList[smallestItemIndex] //1
+        sortedList[smallestItemIndex] = sortedList[i] //2
         sortedList[i] = temp//1
 
         println("$list")
@@ -349,8 +350,9 @@ fun l1CheckIfNumberPalindrome() {
 
     //A palindrome is a number or string that reads the same forward and backward.
     // In other words, when reversed, it remains unchanged.
-    val number1 = 12345678
+    val number1= 12345678
     val number2 = 1234321
+
 
     if (isNumberPalindrome(number1)) println("$number1 is palindrome") else println("$number1 is not palindrome")
     if (isNumberPalindrome(number2)) println("$number2 is palindrome") else println("$number2 is not palindrome")
@@ -404,7 +406,7 @@ fun l1RemoveLeadingExtraSpaceFromString() {
 
         if (newStr.isNotEmpty() ||( i != ' ')) {
                 newStr += i
-            }
+        }
     }
     println(newStr)
 }
@@ -485,10 +487,9 @@ fun l1FindCharInStringAndOccurrences() {
     val findChar = 'a'
 
     println("Original String: $str")
-    val charSet = str.toCharArray()
     var occurrence = 0
 
-    for (i in charSet) {
+    for (i in str) {
         if (i.equals(findChar, ignoreCase = true)) {
             occurrence++
         }
@@ -622,3 +623,32 @@ class CCC{
         bc.a("rfoesjgsojg")
     }
 }
+
+fun calculateAmount(prices: Array<Int> = arrayOf(4, 9, 2, 3, 1)): Long {
+    var totalAmount = prices[0].toLong()
+
+    for (i in 1..prices.size - 1) {
+        if (prices[i] >= prices[i - 1]) {
+            totalAmount = totalAmount + (prices[i] - prices[i - 1]).toLong()
+        }
+    }
+
+    return totalAmount
+}
+
+
+open class XX() {
+
+    open fun print(s: String) {
+        println("xx $s")
+    }
+
+}
+
+class YY() : XX() {
+    override fun print(s: String) {
+        println("yy $s")
+    }
+}
+
+

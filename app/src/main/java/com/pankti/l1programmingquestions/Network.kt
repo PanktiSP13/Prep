@@ -1,5 +1,6 @@
 package com.pankti.l1programmingquestions
 
+import android.database.DatabaseUtils
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,7 +8,6 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
-import okhttp3.Headers
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -20,14 +20,15 @@ object Network {
 
     private const val baseUrl = "https://mocki.io"
 
-    private val retrofit = Retrofit.Builder()
+    private val retrofit: Retrofit by lazy {
+        Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create())
         .client(client())
         .baseUrl(baseUrl)
         .build()
+    }
 
-    private fun client() =
-        OkHttpClient.Builder().addInterceptor(HttpLoggingInterceptor()).addInterceptor(
+    private fun client() = OkHttpClient.Builder().addInterceptor(HttpLoggingInterceptor()).addInterceptor(
             Interceptor { chain ->
                 chain.proceed(
                     chain.request().newBuilder()
