@@ -3,6 +3,7 @@
 # 📘 DSA – Questions & Approach (Clean Notes)
 
 
+*Check Time & Space Complexity* : https://www.bigocalc.com/
 
 ## 1. Merge Alternately
 
@@ -26,9 +27,12 @@ Ignore extra spaces.
 Example: `"  hello world  "` → `"world hello"`
 
 **Approach:**
-Traverse string and extract words manually.
-Store words in list.
-Reverse list and join with space.
+1. Check if string is not empty
+2. Split the string into words using space
+3. Traverse the list from last to first (reverse order)
+4. Add each word to result string
+5. Add space between words (avoid extra space at end)
+6. Trim and return final result
 
 ---
 
