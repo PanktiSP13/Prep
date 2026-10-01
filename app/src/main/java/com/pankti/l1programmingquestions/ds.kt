@@ -1,8 +1,22 @@
-package com.pankti.l1programmingquestions
+package com.pinu.prep
 
 import kotlin.math.max
 import kotlin.math.min
-import kotlin.text.iterator
+
+//driver class
+fun main() {
+//    println(reverseArray().joinToString())
+//    println(findMaxConsecutiveSubArrayFromArray().joinToString())
+//    println(largestUniqueSubstringFromGivenString())
+//    println(gcdOfStrings())
+//    println(kidsWithCandies().joinToString())
+//    println(canPlaceFlowers())
+//    println(reverseVowels())
+//    println(productExceptSelf().joinToString())
+//    println(increasingTriplet())
+//    println(moveZeroes(intArrayOf(1, 0, 2, 0, 4, 0, 0, 1, 5, 1, 0, 0, 0)).joinToString())
+}
+
 
 /**
  * Finds the maximum number of consecutive 1's in the array if at most `k` 0's can be flipped.
@@ -555,35 +569,6 @@ fun mergeAlternately(word1: String, word2: String): String {
 }
 
 
-/**
- *
- *
- * 🔹 When to Use This Pattern
- *
- * Use sliding window when:
- *
- * Subarrays / substrings
- * Fixed size (k) OR variable size
- * Optimize from O(n²) → O(n)
- *   -------------------------------------
- * This example is basic version. In real problems:
- *  *
- *  * You don’t actually create substrings
- *  * Instead, you:
- *  * Track counts (like frequency map)
- *  * Maintain sum / max / min dynamically
- * -------------------------------------
- *  Approach:
- *  Use a fixed-size sliding window of length k.
- *  Initialize two pointers: start = 0 and end = k - 1 to form the first window.
- *  While the window is within the string:
- *    - Extract and process the current substring from start to end.
- *    - Slide the window forward by incrementing both start and end.
- *  This ensures all substrings of size k are processed in O(n) time.
- *
- * */
-
-
 // todo check this always
 fun slidingWindowExample(s: String, k: Int) {
     var start = 0
@@ -597,4 +582,61 @@ fun slidingWindowExample(s: String, k: Int) {
         start++
         end++
     }
+
 }
+
+fun largestUniqueSubstring(s: String): String {
+    var longest = ""
+    val current = StringBuilder()
+
+    for (ch in s) {
+
+        // it will remove all the first chars before this char and start new
+        while (current.contains(ch)) {
+            current.deleteCharAt(0)
+        }
+
+        current.append(ch)
+
+        if (current.length > longest.length) {
+            longest = current.toString()
+        }
+    }
+
+    return longest
+}
+
+
+// add first char , then next time check if next element is unique or not ,
+// if yes then add if not remove all the chars till the first occurrence of current char
+// then start adding again ... and set all substring in longestSubStr when string breaks
+fun findLongestSubString(s: String): String {
+    val subStr = StringBuilder()
+    var longestSubStr = ""
+
+    for (char in s){
+
+        // set longest subStr
+        if(subStr.contains(char)){
+            if(subStr.length > longestSubStr.length){
+                longestSubStr = subStr.toString()
+            }
+
+            // remove duplicate from start
+            for (i in subStr){
+                subStr.deleteCharAt(0)
+                if (i == char){
+                    break
+                }
+            }
+
+        }
+
+
+        // continue with remaining chars
+        subStr.append(char)
+    }
+    return longestSubStr
+
+}
+
